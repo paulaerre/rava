@@ -11,7 +11,7 @@
           width: item.width + 'px'
         }"
         *ngFor="let item of uno"
-      >{{ item.pct | number: "1.0-2" }} %</div>
+      ><p>{{ item.pct | number: "1.0-2" }} % {{ item.variacionDia }}</p></div>
     </div>
     <!-- <div
         class="test"
@@ -36,7 +36,7 @@
           width: item.width + 'px'
         }"
         *ngFor="let item of dos"
-      >{{ item.pct | number: "1.0-2" }} %</div>
+      ><p>{{ item.pct | number: "1.0-2" }} % {{ item.variacionDia }}</p></div>
     </div>
     <div class="row" style="height:33%">
       <div
@@ -46,7 +46,7 @@
           width: item.width + 'px'
         }"
         *ngFor="let item of tres"
-      >{{ item.pct | number: "1.0-2" }} %</div>
+      ><p>{{ item.pct | number: "1.0-2" }} % {{ item.variacionDia }}</p></div>
     </div>
   </div>
 </div>

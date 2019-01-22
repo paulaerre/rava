@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
     this.arr.push( new Sarasa('XLV', 'Salud (ETF)', '90,080', '1,2', '4,1', '4,1'));
     this.arr.push( new Sarasa('GLD', 'Oro (ETF)', '121,020', '-0,9', '-0,2', '-0,2'));
     this.arr.push( new Sarasa('USO', 'Petróleo (ETF)', '11,310', '2,5', '17,1', '17,1'));
-    this.arr.push( new Sarasa('FXE', 'Euro (ETF)', '108,580', '-0,2', '-0,8', '-0,8'));
+    this.arr.push( new Sarasa('FXE', 'Euro (ETF)', '108,580', '-1,2', '-0,8', '-0,8'));
     this.arr.push( new Sarasa('AAPL', 'Apple Computer Inc.', '156,820', '0,6', '-0,6', '-0,6'));
     this.arr.push( new Sarasa('BAC', 'Bank of America Corporation', '29,300', '1,1', '18,9', '18,9'));
     this.arr.push( new Sarasa('C', 'Citigroup Inc.', '63,120', '1,0', '21,2', '21,2'));
@@ -65,15 +65,17 @@ export class AppComponent implements OnInit {
     // Hacer magia
     this.arr.forEach( (item: Sarasa) => {
       item.volumen = item.volumen.replace(',', '.');
+      item.variacionAnio = item.variacionAnio.replace(',', '.');
+      item.variacionMes = item.variacionMes.replace(',', '.');
+      item.variacionDia = item.variacionDia.replace(',', '.');
       this.total += Number(item.volumen);
+
+      this.SetColor(item);
     } );
     this.arr.forEach( (item: Sarasa) => {
       item.pct = (Number(item.volumen) * 100) / this.total;
-      // item.width = (Number(item.volumen) * 100) / 400;
-      // item.height = (Number(item.volumen) * 100) / 200;
       item.width = (this.w / 100) * item.pct;
       item.height = (this.h / 100) * item.pct;
-      item.bgColor = '#' + (Math.floor( Math.random () * 16777215 )).toString(16);
 
     });
 
@@ -147,25 +149,6 @@ export class AppComponent implements OnInit {
 
 
 
-    // this.arr = this.arr.slice(0, 4);
-
-    // this.total = 0 ;
-    // this.arr.map(i => this.total += Number(i.volumen));
-    // const st = this.w * this.h;
-    // // let wi = 0 , he = 0;
-    // this.arr.forEach((item: Sarasa) => {
-    //   item.pct = (Number(item.volumen) * 100) / this.total;
-    //   // item.height = (((item.pct * st ) / this.total ) * this.h) / st;
-    //   // item.height = (((item.pct * 100 ) / st) * 100 ) / this.h;
-    //   // he += item.height;
-    //   item.height = '100';
-    //   // item.width = (((item.pct * st ) / this.total ) * this.w) / st;
-    //   item.width =  (( item.pct ) * this.w ) / 100 ; // (( (item.pct * 100 ) / st) * 100 ) / this.w;
-    //
-    // });
-
-    // console.log(wi , he);
-    // console.log(this.box.elementRef.nativeElement.width);
 
   }
   ChangeColor() {
@@ -180,16 +163,21 @@ export class AppComponent implements OnInit {
       item.bgColor = '#' + (Math.floor(Math.random() * 16777215)).toString(16);
     });
   }
+  SetColor(item: Sarasa) {
+     if (Number(item.variacionDia) > 1.5) {
+      item.bgColor =  this.rgbMaker('00', 255, '00');
+    } else if (Number(item.variacionDia) > 0.4) {
+      item.bgColor =  this.rgbMaker('00', 200, '00');
+    } else if (Number(item.variacionDia) < (-0.9)) {
+      item.bgColor = this.rgbMaker(255, '00', '00');
+    } else if (Number(item.variacionDia) < (-0.4)) {
+      item.bgColor = this.rgbMaker(200, '00', '00');
+    } else {
+      item.bgColor = this.rgbMaker(65, 69, 84);
+    }
+  }
 
-
+  rgbMaker(r: number | string, g: number| string, b: number | string) {
+    return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
+  }
 }
-
-
-/**
- * de los 80k , tengo
- * 10% -> 8k
- * 200 * 40
- * 80
- * 40% , 20%
- *
- */
