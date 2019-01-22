@@ -1,0 +1,19 @@
+.test {
+  /* border: 1px solid rgba(0, 0, 0, 0.8); */
+  display: block;
+  float: left;
+  /* background-color: #dedede; */
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.cien {
+  height: 200px;
+  width: 400px;
+  background: black;
+  /* border-right: 2px solid black; */
+  /* border-top: 2px solid black; */
+  box-sizing: border-box;
+
+}
