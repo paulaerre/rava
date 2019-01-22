@@ -1,10 +1,52 @@
-<div class="cien" #box>
-  <div class="test"
-      [style.background-color]="item.bgColor"
-      [ngStyle]="{width: item.width + 'px' , height: item.height + '%' }" *ngFor="let item of arr">
-    <div style='width: 100%'>
-        <!-- {{ item.codigo }} {{ item.pct | number: "1.0-2" }} -->
-        {{ item.pct | number: "1.0-2"   }}
+<div class="container">
+  <button class="btn btn-primary" (click)="ChangeColor()">Change Colors</button>
+  <div class="cien" #box>
+    <!-- 45, 35, 20 // 50, 35, 15 -->
+
+    <div class="row" style="height:33%">
+      <div
+        class="test"
+        [style.background-color]="item.bgColor"
+        [ngStyle]="{
+          width: item.width + 'px'
+        }"
+        *ngFor="let item of uno"
+      >{{ item.pct | number: "1.0-2" }} %</div>
+    </div>
+    <!-- <div
+        class="test"
+        [style.background-color]="item.bgColor"
+        [ngStyle]="{
+          width: item.width + '%',
+          color: 'white'
+        }"
+        *ngFor="let item of arr"
+      >
+        <div style="width: 100%">
+          </!-- {{ item.codigo }} {{ item.pct | number: "1.0-2" }} --/>
+          {{ item.pct | number: "1.0-2" }}
+        </div>
+      </div>
+    </div> -->
+    <div class="row" style="height:33%">
+      <div
+        class="test"
+        [style.background-color]="item.bgColor"
+        [ngStyle]="{
+          width: item.width + 'px'
+        }"
+        *ngFor="let item of dos"
+      >{{ item.pct | number: "1.0-2" }} %</div>
+    </div>
+    <div class="row" style="height:33%">
+      <div
+        class="test"
+        [style.background-color]="item.bgColor"
+        [ngStyle]="{
+          width: item.width + 'px'
+        }"
+        *ngFor="let item of tres"
+      >{{ item.pct | number: "1.0-2" }} %</div>
     </div>
   </div>
 </div>

@@ -4,15 +4,16 @@ export class Sarasa {
   constructor( public codigo: string ,
                public nombre: string ,
                public volumen: string ,
-               public porcientoDia: string ,
-               public porcientoMes: string,
-               public porcientoAnio: string ) {
+               public variacionDia: string ,
+               public variacionMes: string,
+               public variacionAnio: string ) {
 
   }
   public pct: number;
   public width: number;
   public height: number | string;
   public bgColor: number | string;
+  public pctForView: number;
 }
 
 @Component({
@@ -23,9 +24,18 @@ export class Sarasa {
 export class AppComponent implements OnInit {
   title = 'rava';
   arr: Array<Sarasa> = new Array<Sarasa>();
+
+  uno: Array<Sarasa> = new Array<Sarasa>();
+  dos: Array<Sarasa> = new Array<Sarasa>();
+  tres: Array<Sarasa> = new Array<Sarasa>();
+
+  tot1 = 0;
+  tot2 = 0;
+  tot3 = 0;
   total = 0;
-  w = 400;
-  h = 200;
+  w = 800;
+  h = 400;
+  aux = 0;
   // tslint:disable-next-line:no-input-rename
   @Input('box') box: TemplateRef<any>;
   ngOnInit() {
@@ -50,6 +60,7 @@ export class AppComponent implements OnInit {
     this.arr.push( new Sarasa('PBR', 'Petroleo Brasileiro (Petrobras)', '15,400', '-0,1', '18,4', '18,4'));
     this.arr.push( new Sarasa('TS', 'ADR Tenaris', '24,300', '2,6', '14,0', '14,0'));
     this.arr.push( new Sarasa('YPF', 'ADR YPF', '15,400', '2,9', '15,0', '15,0'));
+    // 21
 
     // Hacer magia
     this.arr.forEach( (item: Sarasa) => {
@@ -58,34 +69,117 @@ export class AppComponent implements OnInit {
     } );
     this.arr.forEach( (item: Sarasa) => {
       item.pct = (Number(item.volumen) * 100) / this.total;
-      item.width = (Number(item.volumen) * 100) / 400;
-      item.height = (Number(item.volumen) * 100) / 200;
+      // item.width = (Number(item.volumen) * 100) / 400;
+      // item.height = (Number(item.volumen) * 100) / 200;
+      item.width = (this.w / 100) * item.pct;
+      item.height = (this.h / 100) * item.pct;
+      item.bgColor = '#' + (Math.floor( Math.random () * 16777215 )).toString(16);
+
     });
 
     this.arr = this.arr.sort(( a , b ) =>  Number(b.volumen) - Number(a.volumen) );
+
+
+    this.arr.forEach((item: Sarasa, i: number) => {
+      const a = 33.3;
+
+      this.aux += item.pct;
+      if (this.aux <= 33.3) {
+
+        this.uno.push(item);
+        this.tot1 += item.pct;
+
+      } else if (this.aux <= 66.6) {
+        if (this.tot1 < a && (this.tot1 + item.pct) <= a) {
+
+          this.uno.push(item);
+          this.tot1 += item.pct;
+
+        } else {
+          this.dos.push(item);
+          this.tot2 += item.pct;
+        }
+      } else if (this.aux <= 100.0) {
+
+        if (this.tot1 < a && (this.tot1 + item.pct) <= a) {
+          this.uno.push(item);
+          this.tot1 += item.pct;
+        } else if (this.tot2 < a && (this.tot2 + item.pct) <= a) {
+          this.dos.push(item);
+          this.tot2 += item.pct;
+        } else {
+          this.tres.push(item);
+          this.tot3 += item.pct;
+        }
+      }
+    });
+
+
+    this.total = 0;
+    this.uno.forEach((item: Sarasa) => {
+      item.volumen = item.volumen.replace(',', '.');
+      this.total += Number(item.volumen);
+    });
+    this.uno.forEach((item: Sarasa) => {
+      item.pctForView = (Number(item.volumen) * 100) / this.total;
+      item.width = (this.w / 100) * item.pctForView;
+    });
+
+    this.total = 0;
+    this.dos.forEach((item: Sarasa) => {
+      item.volumen = item.volumen.replace(',', '.');
+      this.total += Number(item.volumen);
+    });
+    this.dos.forEach((item: Sarasa) => {
+      item.pctForView = (Number(item.volumen) * 100) / this.total;
+      item.width = (this.w / 100) * item.pctForView;
+    });
+
+    this.total = 0;
+    this.tres.forEach((item: Sarasa) => {
+      item.volumen = item.volumen.replace(',', '.');
+      this.total += Number(item.volumen);
+    });
+    this.tres.forEach((item: Sarasa) => {
+      item.pctForView = (Number(item.volumen) * 100) / this.total;
+      item.width = (this.w / 100) * item.pctForView;
+    });
+
+
+
     // this.arr = this.arr.slice(0, 4);
 
     // this.total = 0 ;
     // this.arr.map(i => this.total += Number(i.volumen));
-    const st = this.w * this.h;
-    let wi = 0 , he = 0;
-    this.arr.forEach((item: Sarasa) => {
-      item.pct = (Number(item.volumen) * 100) / this.total;
-      // item.height = (((item.pct * st ) / this.total ) * this.h) / st;
-      // item.height = (((item.pct * 100 ) / st) * 100 ) / this.h;
-      // he += item.height;
-      item.height = '100';
-      // item.width = (((item.pct * st ) / this.total ) * this.w) / st;
-      item.width =  (( item.pct ) * this.w ) / 100 ; // (( (item.pct * 100 ) / st) * 100 ) / this.w;
-      wi += item.width;
-      item.bgColor = '#' + (Math.floor( Math.random () * 16777215 )).toString(16);
-    });
+    // const st = this.w * this.h;
+    // // let wi = 0 , he = 0;
+    // this.arr.forEach((item: Sarasa) => {
+    //   item.pct = (Number(item.volumen) * 100) / this.total;
+    //   // item.height = (((item.pct * st ) / this.total ) * this.h) / st;
+    //   // item.height = (((item.pct * 100 ) / st) * 100 ) / this.h;
+    //   // he += item.height;
+    //   item.height = '100';
+    //   // item.width = (((item.pct * st ) / this.total ) * this.w) / st;
+    //   item.width =  (( item.pct ) * this.w ) / 100 ; // (( (item.pct * 100 ) / st) * 100 ) / this.w;
+    //
+    // });
 
-    console.log(wi , he);
-// console.log(this.box.elementRef.nativeElement.width);
+    // console.log(wi , he);
+    // console.log(this.box.elementRef.nativeElement.width);
 
   }
+  ChangeColor() {
 
+    this.uno.forEach((item: Sarasa) => {
+      item.bgColor = '#' + (Math.floor(Math.random() * 16777215)).toString(16);
+    });
+    this.dos.forEach((item: Sarasa) => {
+      item.bgColor = '#' + (Math.floor(Math.random() * 16777215)).toString(16);
+    });
+    this.tres.forEach((item: Sarasa) => {
+      item.bgColor = '#' + (Math.floor(Math.random() * 16777215)).toString(16);
+    });
+  }
 
 
 }
