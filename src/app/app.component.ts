@@ -166,8 +166,10 @@ export class AppComponent implements OnInit {
   SetColor(item: Sarasa) {
      if (Number(item.variacionDia) > 1.5) {
       item.bgColor =  this.rgbMaker('00', 255, '00');
-    } else if (Number(item.variacionDia) > 0.4) {
+    } else if (Number(item.variacionDia) > 1.0) {
       item.bgColor =  this.rgbMaker('00', 200, '00');
+    } else if (Number(item.variacionDia) > 0.5) {
+      item.bgColor =  this.rgbMaker('00', 155, '00');
     } else if (Number(item.variacionDia) < (-0.9)) {
       item.bgColor = this.rgbMaker(255, '00', '00');
     } else if (Number(item.variacionDia) < (-0.4)) {
